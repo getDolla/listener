@@ -1,19 +1,25 @@
-var canvas = document.getElementById('canvas');
-var ctx = canvas.getContext('2d');
+var svg = document.getElementById('svg');
 var circle = document.getElementById("circle");
 var dvd = document.getElementById("dvd");
 var stop = document.getElementById("stop");
 
-var img = new Image();
-img.src = "http://i1-news.softpedia-static.com/images/news2/get-your-windows-10-dvd-player-app-alternatives-488756-3.jpg";
+var src = "http://i1-news.softpedia-static.com/images/news2/get-your-windows-10-dvd-player-app-alternatives-488756-3.jpg";
 var rid = 0;
 
-/* start drawing */
-ctx.beginPath();
+/* dimensions */
+var w = svg.getAttribute("width")
+var h = svg.getAttribute("height")
 
 /* stop current animation */
 var stopIt = function() {
     window.cancelAnimationFrame( rid );
+};
+
+/* clear */
+var clear = function() {
+  while (svg.lastChild) {
+    svg.removeChild(svg.lastChild);
+  }
 };
 
 /* closure structure */
@@ -23,13 +29,16 @@ var animateCircle = function(evt) {
   stopIt();
 
   var drawCircle = function(evt) {
-    ctx.clearRect(0,0, canvas.width, canvas.height);
-    ctx.fillStyle = "#ffb732";
+    clear();
 
-    ctx.arc(canvas.width/2, canvas.height/2, rad, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.stroke();
-    ctx.beginPath();
+    var c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    c.setAttribute("cx", w/2);
+    c.setAttribute("cy", h/2);
+    c.setAttribute("stroke", "black");
+    c.setAttribute("stroke-width", "1");
+    c.setAttribute("fill", "#ffb732");
+    c.setAttribute("r", rad.toString());
+    svg.appendChild(c);
 
     if (rad >= 100) increasing = false;
     else if ( rad <= 0 ) increasing = true;
@@ -45,8 +54,8 @@ var animateCircle = function(evt) {
 
 /* closure structure */
 var animateDVD = function(evt) {
-  var xcor = canvas.width/2;
-  var ycor = canvas.height/2;
+  var xcor = w/2;
+  var ycor = h/2;
 
   /* change the xval and yval = change in speed */
   var xval = 2;
@@ -55,15 +64,21 @@ var animateDVD = function(evt) {
   stopIt();
 
   var drawDVD = function(evt) {
-    ctx.clearRect(0,0, canvas.width, canvas.height);
+    clear();
 
     /* remember that images are drawn from the upper left hand corner */
-    ctx.drawImage(img, xcor, ycor, 120, 80);
+    var d = document.createElementNS("http://www.w3.org/2000/svg", "image");
+    d.setAttribute("href", src );
+    d.setAttribute("x", xcor.toString());
+    d.setAttribute("y", ycor.toString());
+    d.setAttribute("height", "80");
+    d.setAttribute("width", "120");
+    svg.appendChild(d);
 
     /* if image hits borders */
-      /* Note: different values are used instead of 0 and canvas.width/height due to image whitespace */
-    xval = ( ((xcor + xval) <= -18) || ((xcor + xval) >= (canvas.width - 102) ) ) ? -xval : xval;
-    yval = ( ((ycor + yval) <= -10) || ((ycor + yval) >= (canvas.height - 70) ) ) ? -yval : yval;
+      /* Note: different values are used instead of 0 and w/height due to image whitespace */
+    xval = ( ((xcor + xval) <= -18) || ((xcor + xval) >= (w - 102) ) ) ? -xval : xval;
+    yval = ( ((ycor + yval) <= -10) || ((ycor + yval) >= (h - 70) ) ) ? -yval : yval;
 
     xcor += xval;
     ycor += yval;
@@ -80,5 +95,4 @@ dvd.addEventListener('click', animateDVD );
 /* stop animation */
 stop.addEventListener("click", function(evt) {
     stopIt();
-    ctx.beginPath();
 });
