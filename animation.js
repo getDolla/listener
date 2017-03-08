@@ -1,9 +1,7 @@
 var svg = document.getElementById('svg');
-var circle = document.getElementById("circle");
-var dvd = document.getElementById("dvd");
-var stop = document.getElementById("stop");
+var move = document.getElementById("move");
+var clear = document.getElementById("clear");
 
-var src = "http://i1-news.softpedia-static.com/images/news2/get-your-windows-10-dvd-player-app-alternatives-488756-3.jpg";
 var rid = 0;
 
 /* dimensions */
