@@ -22,8 +22,7 @@ var clear = function() {
 
 /* closure structure */
 var animateCircle = function(evt) {
-  var rad = 0;
-  var increasing = true;
+  var rad = 1;
   stopIt();
 
   var drawCircle = function(evt) {
@@ -38,57 +37,13 @@ var animateCircle = function(evt) {
     c.setAttribute("r", rad.toString());
     svg.appendChild(c);
 
-    if (rad >= 100) increasing = false;
-    else if ( rad <= 0 ) increasing = true;
-
-    if (increasing) rad++;
-    else rad --;
-
     rid = window.requestAnimationFrame( drawCircle );
   };
 
   drawCircle();
 };
 
-/* closure structure */
-var animateDVD = function(evt) {
-  var xcor = w/2;
-  var ycor = h/2;
-
-  /* change the xval and yval = change in speed */
-  var xval = 2;
-  var yval = 2;
-
-  stopIt();
-
-  var drawDVD = function(evt) {
-    clear();
-
-    /* remember that images are drawn from the upper left hand corner */
-    var d = document.createElementNS("http://www.w3.org/2000/svg", "image");
-    d.setAttribute("href", src );
-    d.setAttribute("x", xcor.toString());
-    d.setAttribute("y", ycor.toString());
-    d.setAttribute("height", "80");
-    d.setAttribute("width", "120");
-    svg.appendChild(d);
-
-    /* if image hits borders */
-      /* Note: different values are used instead of 0 and w/height due to image whitespace */
-    xval = ( ((xcor + xval) <= -18) || ((xcor + xval) >= (w - 102) ) ) ? -xval : xval;
-    yval = ( ((ycor + yval) <= -10) || ((ycor + yval) >= (h - 70) ) ) ? -yval : yval;
-
-    xcor += xval;
-    ycor += yval;
-
-    rid = window.requestAnimationFrame( drawDVD );
-  };
-
-  drawDVD();
-};
-
 circle.addEventListener('click', animateCircle );
-dvd.addEventListener('click', animateDVD );
 
 /* stop animation */
 stop.addEventListener("click", function(evt) {
