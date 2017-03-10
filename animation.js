@@ -40,7 +40,7 @@ var circle_stuff = function(evt) {
     }
     else if ( this.getAttribute("fill") == "green") {
       svg.removeChild(this);
-      circle( Math.abs( Math.random() * w, Math.random() * h );
+      circle( Math.random() * w, Math.random() * h );
     }
     evt.stopPropagation();
 };
