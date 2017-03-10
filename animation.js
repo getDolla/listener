@@ -11,6 +11,9 @@ var h = svg.getAttribute("height")
 /* circle radius */
 var rad = 10;
 
+/* speed of circle */
+var speed = 2;
+
 var mousex, mousey;
 
 /* keeps track of the xcor and ycor of mouse */
@@ -31,6 +34,22 @@ var clear = function() {
     }
 };
 
+var circle = function(x,y) {
+
+  var c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  c.setAttribute("cx", x);
+  c.setAttribute("cy", y);
+  c.setAttribute("stroke", "black");
+  c.setAttribute("stroke-width", "1");
+  c.setAttribute("fill", "#551a8b");
+  c.setAttribute("r", rad.toString());
+  c.setAttribute("xval", speed.toString());
+  c.setAttribute("yval", speed.toString());
+  svg.appendChild(c);
+  c.addEventListener("click", circle_stuff() );
+
+};
+
 var circle_stuff = function(evt) {
     if(evt.target.getAttribute("fill") != "green") {
       evt.target.setAttribute("fill", "#green");
@@ -44,22 +63,8 @@ var circle_stuff = function(evt) {
 /* closure structure */
 var drawCircle = function(evt) {
 
-  var circle = function(evt) {
-
-  	var c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-  	c.setAttribute("cx", mousex);
-  	c.setAttribute("cy", mousey);
-  	c.setAttribute("stroke", "black");
-  	c.setAttribute("stroke-width", "1");
-  	c.setAttribute("fill", "#551a8b");
-  	c.setAttribute("r", rad.toString());
-  	svg.appendChild(c);
-    c.addEventListener("click", circle_stuff() );
-
-  };
-
   if( this == evt.target ) {
-    circle();
+    circle(mousex, mousey);
   }
 
 };
@@ -68,8 +73,6 @@ var drawCircle = function(evt) {
 var animateCircle = function(evt) {
 
     /* change the xval and yval = change in speed */
-    var xval = 2;
-    var yval = 2;
 
     var animate = function(evt) {
 	       var children = svg.children;
@@ -78,6 +81,10 @@ var animateCircle = function(evt) {
 
       	    var xcor = parseInt(children[i].getAttribute("cx"));
       	    var ycor = parseInt(children[i].getAttribute("cy"));
+
+
+            var xval = parseInt(children[i].getAttribute("xval"));
+            var yval = parseInt(children[i].getAttribute("yval"));
 
       	    /* if image hits borders */
       	    /* Note: different values are used instead of 0 and w/height due to image whitespace */
@@ -89,6 +96,8 @@ var animateCircle = function(evt) {
 
       	    children[i].setAttribute("cx", xcor.toString());
       	    children[i].setAttribute("cy", ycor.toString());
+            children[i].setAttribute("xval", xval.toString());
+      	    children[i].setAttribute("yval", yval.toString());
 
           }
 
