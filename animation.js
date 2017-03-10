@@ -79,7 +79,6 @@ var animateCircle = function(evt) {
       	    var xcor = parseInt(children[i].getAttribute("x"));
       	    var ycor = parseInt(children[i].getAttribute("y"));
 
-      	    children[i].setAttribute("href", src );
       	    children[i].setAttribute("x", xcor.toString());
       	    children[i].setAttribute("y", ycor.toString());
 
