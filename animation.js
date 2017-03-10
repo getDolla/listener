@@ -38,10 +38,12 @@ var circle_stuff = function(evt) {
     if( this.getAttribute("fill") == "purple") {
       this.setAttribute("fill", "green");
     }
+
     else if ( this.getAttribute("fill") == "green") {
       svg.removeChild(this);
       circle( Math.random() * w, Math.random() * h );
     }
+    
     evt.stopPropagation();
 };
 
