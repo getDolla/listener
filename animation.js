@@ -9,7 +9,7 @@ var w = svg.getAttribute("width")
 var h = svg.getAttribute("height")
 
 /* circle radius */
-var rad = 10;
+var rad = 16;
 
 /* speed of circle */
 var speed = 2;
@@ -34,6 +34,17 @@ var clear = function() {
     }
 };
 
+var circle_stuff = function(evt) {
+    if( this.getAttribute("fill") == "purple") {
+      this.setAttribute("fill", "green");
+    }
+    else if ( this.getAttribute("fill") == "green") {
+      svg.removeChild(this);
+      circle( Math.abs( Math.random() * w - rad ), Math.abs( Math.random() * h - rad ) );
+    }
+    evt.stopPropagation();
+};
+
 var circle = function(x,y) {
 
   var c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
@@ -41,23 +52,13 @@ var circle = function(x,y) {
   c.setAttribute("cy", y);
   c.setAttribute("stroke", "black");
   c.setAttribute("stroke-width", "1");
-  c.setAttribute("fill", "#551a8b");
+  c.setAttribute("fill", "purple");
   c.setAttribute("r", rad.toString());
   c.setAttribute("xval", speed.toString());
   c.setAttribute("yval", speed.toString());
   svg.appendChild(c);
-  c.addEventListener("click", circle_stuff() );
+  c.addEventListener("click", circle_stuff, true );
 
-};
-
-var circle_stuff = function(evt) {
-    if(evt.target.getAttribute("fill") != "green") {
-      evt.target.setAttribute("fill", "#green");
-    }
-    else {
-      svg.removeChild(evt.target);
-    }
-    evt.stopPropagation();
 };
 
 /* closure structure */
