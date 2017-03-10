@@ -76,11 +76,8 @@ var animateCircle = function(evt) {
 
          for(var i = 0; i < children.length; i++) {
 
-      	    var xcor = parseInt(children[i].getAttribute("x"));
-      	    var ycor = parseInt(children[i].getAttribute("y"));
-
-      	    children[i].setAttribute("x", xcor.toString());
-      	    children[i].setAttribute("y", ycor.toString());
+      	    var xcor = parseInt(children[i].getAttribute("cx"));
+      	    var ycor = parseInt(children[i].getAttribute("cy"));
 
       	    /* if image hits borders */
       	    /* Note: different values are used instead of 0 and w/height due to image whitespace */
@@ -89,6 +86,10 @@ var animateCircle = function(evt) {
 
       	    xcor += xval;
       	    ycor += yval;
+
+      	    children[i].setAttribute("cx", xcor.toString());
+      	    children[i].setAttribute("cy", ycor.toString());
+
           }
 
 	        rid = window.requestAnimationFrame( animate );
