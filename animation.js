@@ -1,6 +1,6 @@
 var svg = document.getElementById('svg');
 var move = document.getElementById("move");
-var clear = document.getElementById("clear");
+var clean = document.getElementById("clear");
 
 var rid = 0;
 
@@ -9,7 +9,7 @@ var w = svg.getAttribute("width")
 var h = svg.getAttribute("height")
 
 /* circle radius */
-var rad = 4;
+var rad = 10;
 
 var mousex, mousey;
 
@@ -27,8 +27,18 @@ var stopIt = function() {
 /* clear */
 var clear = function() {
     while (svg.lastChild) {
-	svg.removeChild(svg.lastChild);
+	      svg.removeChild(svg.lastChild);
     }
+};
+
+var circle_stuff = function(evt) {
+    if(evt.target.getAttribute("fill") != "green") {
+      evt.target.setAttribute("fill", "#green");
+    }
+    else {
+      svg.removeChild(evt.target);
+    }
+    evt.stopPropagation();
 };
 
 /* closure structure */
@@ -44,10 +54,14 @@ var drawCircle = function(evt) {
   	c.setAttribute("fill", "#551a8b");
   	c.setAttribute("r", rad.toString());
   	svg.appendChild(c);
+    c.addEventListener("click", circle_stuff() );
 
   };
 
-  circle();
+  if( this == evt.target ) {
+    circle();
+  }
+
 };
 
 
@@ -84,21 +98,11 @@ var animateCircle = function(evt) {
     animate();
 };
 
-var changecolor = function(evt) {
-  this.setAttribute("fill", "green");
-  evt.stopPropagation();
-};
-
-var removeCircle = function(evt) {
-  svg.removeChild(this);
-  evt.stopPropagation();
-};
-
-svg.addEventListener('click', to_do() );
-move.addEventListener('click', animateCircle() );
+svg.addEventListener('click', drawCircle );
+move.addEventListener('click', animateCircle );
 
 /* clear button */
-clear.addEventListener("click", function(evt) {
+clean.addEventListener('click', function(evt) {
     stopIt();
-    clear()
+    clear();
 });
