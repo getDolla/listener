@@ -7,7 +7,7 @@ var rid = 0;
 var width = svg.getAttribute("width");
 var height = svg.getAttribute("height");
 
-var master_radius = 16;
+var master_radius = 24;
 var master_speed = 2;
 
 var mousex, mousey;
@@ -29,9 +29,9 @@ var makeCircle = function(xcor, ycor, radius, dx, dy){
     circle.setAttribute("stroke", "black");
     circle.setAttribute("stroke-width", "1");
     circle.setAttribute("fill", "purple");
-    circle.setAttribute("r", radius);
-    circle.setAttribute("dx", dx);
-    circle.setAttribute("dy", dy);
+    circle.setAttribute("r", radius.toString());
+    circle.setAttribute("dx", dx.toString());
+    circle.setAttribute("dy", dy.toString());
     circle.setAttribute("clicked", false);
     return circle;
 };
@@ -42,8 +42,11 @@ var drawCircle = function(xcor, ycor, radius, dx, dy){
     circle.addEventListener("click", function(evt){
         if (evt.target == this){
             if (circle.getAttribute("clicked") == "true"){
+                drawCircle(Math.floor(Math.random() * width), Math.floor(Math.random() * height),
+                  parseInt(this.getAttribute("r")),
+                  parseInt(-this.getAttribute("dx")),
+                  parseInt(-this.getAttribute("dy")));
                 svg.removeChild(this);
-                drawCircle(Math.floor(Math.random() * width), Math.floor(Math.random() * height));
             }else{
                 this.setAttribute("fill", "green");
                 this.setAttribute("clicked", true);
@@ -55,23 +58,28 @@ var drawCircle = function(xcor, ycor, radius, dx, dy){
 };
 
 var animate_circle = function(){
-    for(var circle of svg.children){
+    var i = 0;
+    while(i < svg.children.length){
+        var circle = svg.children[i];
+
         if (parseInt(circle.getAttribute("r")) <= 1){
             svg.removeChild(circle);
-        }else{
+        } else{
             var circleX = parseInt(circle.getAttribute("cx"));
             var circleY = parseInt(circle.getAttribute("cy"));
             var circleRadius = parseInt(circle.getAttribute("r"));
-            if (circleX < circleRadius || circleX >= width - circleRadius){
-		circle.setAttribute("dx", -parseInt(circle.getAttribute("dx")));
-	    }
-            if (circleY < circleRadius || circleY >= height - circleRadius){
-		circle.setAttribute("dy", -parseInt(circle.getAttribute("dy")));
-	    }
-        }
 
-	circle.setAttribute("cx", circleX + parseInt(circle.getAttribute("dx")));
-        circle.setAttribute("cy", circleY + parseInt(circle.getAttribute("dy")));
+            if (circleX < circleRadius || circleX >= width - circleRadius){
+		              circle.setAttribute("dx", -parseInt(circle.getAttribute("dx")));
+	           }
+
+            if (circleY < circleRadius || circleY >= height - circleRadius){
+		              circle.setAttribute("dy", -parseInt(circle.getAttribute("dy")));
+	           }
+
+
+	            circle.setAttribute("cx", circleX + parseInt(circle.getAttribute("dx")));
+              circle.setAttribute("cy", circleY + parseInt(circle.getAttribute("dy")));
 
         if (circle.getAttribute("cx") == width / 2){
             circle.setAttribute("r", parseInt(circle.getAttribute("r")) / 2);
@@ -81,6 +89,9 @@ var animate_circle = function(){
                        parseInt(-circle.getAttribute("dx")),
                        parseInt(-circle.getAttribute("dy")));
         }
+
+        i++;
+      }
     }
 
     rid = window.requestAnimationFrame(animate_circle);
@@ -95,3 +106,8 @@ svg.addEventListener("click", function(evt){
 move_button.addEventListener("click", function(evt){
     animate_circle();
 });
+
+clear_button.addEventListener('click', function(evt) {
+     stop();
+     clear();
+ });
